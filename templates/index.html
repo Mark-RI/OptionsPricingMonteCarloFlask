@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Financial Analysis</title>
+    <style>
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+        background-color: #f9f9f9;
+      }
+
+      .container {
+        text-align: center;
+        max-width: 800px;
+        width: 100%;
+      }
+
+      input[type="text"] {
+        margin-top: 20px;
+        padding: 10px;
+        width: 200px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      button {
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+
+      .result-text {
+        margin-top: 20px;
+        font-size: 1.2em;
+        color: #333;
+      }
+
+      .chart {
+        margin-top: 20px;
+        width: 100%;
+        height: 400px;
+      }
+    </style>
+      <script>
+        // Set today's date as the minimum selectable date
+        window.onload = function () {
+          const today = new Date().toISOString().split("T")[0];
+          document.getElementById("date").setAttribute("min", today);
+        };
+      </script>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Options Pricing Monte Carlo</h1>
+      <form method="POST" action="/">
+        <input type="text" name="ticker" placeholder="Enter ticker symbol" required />
+        <br>
+        <input type="text" name="strike" placeholder="Strike Price" required />
+        <br><br>
+    
+        <label for="optionType">Option Type:</label>
+        <select id="optionType" name="optionType" required>
+          <option value="" disabled selected>Select one</option>
+          <option value="call">Call</option>
+          <option value="put">Put</option>
+        </select>
+        <br><br>
+    
+        <label for="date">Select a future date:</label>
+        <input type="date" id="date" name="date" required>
+        <br>
+    
+        <button type="submit">Submit</button>
+      </form>
+
+      {% if ticker and latest_price and option_type and strike_price %}
+        <div class="result-text">
+          <p>Ticker: {{ ticker }} | Current Price: {{ latest_price }} | Option Type: {{ option_type }} | Strike Price: {{ strike_price }}</p>
+        </div>
+      {% endif %}
+
+      {% if std_daily and std_annual %}
+        <div class="result-text">
+          <p>Daily Standard Deviation: {{ std_daily }} | Annual Standard Deviation: {{ std_annual }}</p>
+        </div>
+      {% endif %}
+
+      {% if annual_chart_html %}
+        <div style="text-align: center; margin-top: 20px;">
+          <img src="{{ annual_chart_html }}" alt="Monte Carlo Simulation Plot" style="max-width: 100%; height: auto; display: inline-block;">
+        </div>
+      {% endif %}
+
+      {% if mean_option_payoff_discounted %}
+        <div class="result-text">
+          <p><b>Fair options price:</b> {{ mean_option_payoff_discounted }}</p>
+        </div>
+      {% endif %}
+
+      {% if mean_option_payoff %}
+        <div class="result-text">
+          <p>Average option payoff: {{ mean_option_payoff }}</p>
+        </div>
+      {% endif %}
+
+      {% if mean_option_payoff_discounted %}
+        <div class="result-text">
+          <p>Average option payoff discounted: {{ mean_option_payoff_discounted }}</p>
+        </div>
+      {% endif %}
+
+      {% if matration_date %}
+        <div class="result-text">
+          <p>Maturation date: {{ matration_date }}</p>
+        </div>
+      {% endif %}
+
+      {% if days %}
+        <div class="result-text">
+          <p>Days until maturation: {{ days }}</p>
+        </div>
+      {% endif %}
+
+      {% if t %}
+        <div class="result-text">
+          <p>Trading days until maturation: {{ t }}</p>
+        </div>
+      {% endif %}
+
+    </div>
+  </body>
+</html>
