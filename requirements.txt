@@ -1,0 +1,9 @@
+flask
+pandas_datareader
+numpy
+yfinance
+requests
+datetime
+gunicorn
+plotly
+matplotlib
